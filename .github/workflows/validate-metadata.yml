@@ -1,0 +1,31 @@
+name: Validate Article Metadata
+
+# Trigger the action on push or pull request changes to the `articles/` folder
+on:
+  push:
+    paths:
+      - articles/**
+  pull_request:
+    paths:
+      - articles/**
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Run the validation script
+      - name: Validate Metadata in Articles
+        run: |
+          for file in articles/*.md; do
+            echo "Validating $file"
+            if ! grep -q "^cover: " "$file"; then
+              echo "❌ Validation failed for $file: Missing 'cover' metadata"
+              exit 1
+            fi
+            echo "✅ $file is valid"
+          done
