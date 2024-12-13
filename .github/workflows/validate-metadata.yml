@@ -4,7 +4,7 @@ name: Validate Article Metadata
 on:
   push:
     paths:
-      - articles/**
+      - "articles/*.md"
   pull_request:
     paths:
       - articles/**
